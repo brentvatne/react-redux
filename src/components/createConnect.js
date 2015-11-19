@@ -184,7 +184,7 @@ export default function createConnect(React) {
           this.tryUnsubscribe();
         }
 
-        handleChange() {
+        handleChange(instrumentationFn) {
           if (!this.unsubscribe) {
             return;
           }
@@ -192,6 +192,14 @@ export default function createConnect(React) {
           this.setState({
             storeState: this.store.getState()
           });
+
+          if (typeof instrumentationFn === 'function') {
+            return instrumentationFn(
+              getDisplayName(WrappedComponent),
+              this.nextState,
+              this
+            );
+          }
         }
 
         getWrappedInstance() {
